@@ -25,7 +25,7 @@ const VehicleSchema = mongoose.Schema({
     type: String,
   },
   biddings: [
-    { type: mongoose.Schema.Types.ObjectId, required: false, ref: 'biddings' }
+    { type: mongoose.Schema.Types.ObjectId, required: false, ref: 'bidding' }
   ]
 });
 module.exports = mongoose.model('vehicle', VehicleSchema);
