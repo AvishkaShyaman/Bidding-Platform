@@ -13,6 +13,8 @@ connectDB();
 
 //import routes
 const vehicle = require('./routes/vehicle.route');
+const user = require('./routes/user.route');
+const bidding = require('./routes/bidding.route');
 
 const app = express();
 
@@ -24,6 +26,8 @@ app.use(bodyParser.json());
 
 //register routes
 app.use('/api/v1/vehicle',vehicle);
+app.use('/api/v1/user',user);
+app.use('/api/v1/bidding',bidding);
 
 // Static Files
 app.use(express.static('public'));
