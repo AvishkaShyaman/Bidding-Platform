@@ -2,11 +2,8 @@ const Vehicle = require('../models/vehicle.model');
 
 const addVehicle = async (req, res) => {
   try {
-    console.log('in add vehicle');
     const { model, price, year, description, manufacturer } = req.body;
     
-    console.log('after req vehicle');
-
     // if ( !model || !price || !year || !description || !manufacturer) {
     //   res.status(500).json({
     //     success: false,
@@ -23,12 +20,8 @@ const addVehicle = async (req, res) => {
       img: '',
       biddings: [],
     });
-    console.log('after new vehicle');
 
     const vehicle = await newVehicle.save();
-
-    console.log('send vehicle' , vehicle);
-
 
     res.status(200).json({
       success: true,
@@ -45,7 +38,7 @@ const addVehicle = async (req, res) => {
 
 const getVehicle = async (req, res) => {
   try {
-    const vehicle = await Vehicle.findById(req.params.id);
+    const vehicle = await Vehicle.findById(req.params.id).populate('biddings');
 
     res.status(200).json({
       success: true,
