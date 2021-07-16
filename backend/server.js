@@ -12,9 +12,7 @@ dotenv.config({ path: './backend/config/.env' });
 connectDB();
 
 //import routes
-// const food = require('./router/food.router');
-// const category = require('./router/category.router');
-// const calculateAmount = require('./router/calculateAmount.route');
+const vehicle = require('./routes/vehicle.route');
 
 const app = express();
 
@@ -25,9 +23,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 //register routes
-// app.use('/api/v1/category',category);
-// app.use('/api/v1/food',food);
-// app.use('/api/v1/calculateamount',calculateAmount);
+app.use('/api/v1/vehicle',vehicle);
 
 // Static Files
 app.use(express.static('public'));
