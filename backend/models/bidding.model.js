@@ -6,6 +6,6 @@ const BiddingSchema = mongoose.Schema({
     required: true,
   },
   vehicle: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'vehicle' },
-  user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'user' },
+  user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'users' },
 }, { timestamps: true });
 module.exports = mongoose.model('bidding', BiddingSchema);

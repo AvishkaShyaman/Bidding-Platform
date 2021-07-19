@@ -3,11 +3,8 @@ const Bidding = require('../models/bidding.model');
 
 const addBidding = async (req, res) => {
   try {
-    console.log('in add bidding');
     const { amount, user, vehicleID } = req.body;
     
-    console.log('after req bidding',amount, user, vehicleID);
-
     // if ( !amount || !user || !vehicle) {
     //   res.status(500).json({
     //     success: false,
@@ -23,7 +20,6 @@ const addBidding = async (req, res) => {
     
     const bidding = await newBidding.save();
     
-    console.log('after new bidding',bidding);
     if(bidding){
 
       const vehicle = await Vehicle.findById(vehicleID);
@@ -51,18 +47,23 @@ const addBidding = async (req, res) => {
 
 const getBidding = async (req, res) => {
   try {
-    const { vehicleId } = req.quary;
+    const { vehicleId } = req.query;
 
     if (vehicleId) {
-      const bidding = await User.findOne({ vehicle: vehicleId });
+      const bidding = await Bidding.find({vehicle: vehicleId}).sort({amount: -1});
 
       if(bidding) {
         res.status(200).json({
           success: true,
-          data: { user },
+          data: { bidding },
         });
-      }      
-    } 
+      }     
+    } else {
+      res.status(500).json({
+        success: faise,
+        message: 'please include vehicleId',
+      });
+    }  
 
   } catch (err) {
     res.status(500).json({

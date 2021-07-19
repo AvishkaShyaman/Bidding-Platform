@@ -12,4 +12,4 @@ const UserSchema = mongoose.Schema({
     { type: mongoose.Schema.Types.ObjectId, required: false, ref: 'vehicle' },
   ],
 });
-module.exports = mongoose.model('user', UserSchema);
+module.exports = mongoose.model('users', UserSchema);
