@@ -1,8 +1,7 @@
-import React, {useContext, useEffect} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Grid,
   Select,
-  Typography,
   Button,
   FormControl,
   InputLabel,
@@ -23,13 +22,19 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(10),
   },
   contentList: {
-    marginTop: theme.spacing(2)
-  }
+    marginTop: theme.spacing(2),
+  },
+  btn: {
+    margin: theme.spacing(2),
+  },
 }));
 
 const Vehicle = () => {
   const classes = useStyles();
-  const { vehicles,  getVehicle } = useContext(vehicleContext);
+  const { vehicles, getVehicle, vehicleSortBy } = useContext(vehicleContext);
+
+  const [year, setYear] = useState('');
+  const [color, setColor] = useState('');
 
   useEffect(() => {
     getVehicle();
@@ -41,29 +46,44 @@ const Vehicle = () => {
     years.push(i);
   }
 
-  const handleChange = (event) => {
-    const name = event.target.value;
+  const handleYearChange = (event) => {
+    const value = event.target.value;
+    setYear(value);
+    console.log('first year');
+    vehicleSortBy({ year: value });
   };
+
+  const handleColorChange = (event) => {
+    const value = event.target.value;
+    setColor(value);
+    vehicleSortBy({ color: value });
+  };
+
+  const onClickClear = () => {
+    getVehicle();
+    setYear('');
+    setColor('');
+  }
   return (
     <>
       <Grid
         container
         spacing={1}
         className={classes.title}
-        justify="space-between"
+        justifyContent="space-between"
         alignItems="center"
       >
-        <Grid item lg={5}>
+        <Grid item lg={5} md={6} sm={12} xs={12}>
           <Search />
         </Grid>
-        <Grid container spacing={1} item lg={4}>
-          <Grid item lg={6}>
+        <Grid container direction="row" justifyContent="space-evenly" alignItems="center" spacing={1} item lg={4} md={6} sm={12} xs={12}>
+          <Grid item sm={4} xs={12}>
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel htmlFor="outlined-age-native-simple">year</InputLabel>
               <Select
                 native
-                onChange={handleChange}
-                value={''}
+                onChange={handleYearChange}
+                value={year}
                 label="year"
                 inputProps={{
                   name: 'Category',
@@ -81,15 +101,15 @@ const Vehicle = () => {
             </FormControl>
           </Grid>
 
-          <Grid item lg={6}>
+          <Grid item sm={4} xs={12}>
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel htmlFor="outlined-age-native-simple">
                 Color
               </InputLabel>
               <Select
                 native
-                onChange={handleChange}
-                value={''}
+                onChange={handleColorChange}
+                value={color}
                 label="year"
                 inputProps={{
                   name: 'Category',
@@ -106,13 +126,19 @@ const Vehicle = () => {
               </Select>
             </FormControl>
           </Grid>
+          <Grid item sm={3} xs={12} container direction="row" justify="flex-end" alignItems="center">
+            <Button onClick={onClickClear} variant="contained" color="primary">
+              Clear
+            </Button>
+          </Grid>
         </Grid>
       </Grid>
+
       <Grid
         container
         spacing={4}
         className={classes.contentList}
-        justify="space-evenly"
+        justifyContent="space-evenly"
         alignItems="center"
       >
         {vehicles.map((vehicle) => (
@@ -123,6 +149,6 @@ const Vehicle = () => {
       </Grid>
     </>
   );
-}
+};
 
 export default Vehicle;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -9,7 +9,9 @@ import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
+
+import vehicleContext from '../../context/VehicleContext/vehicle-context';
 
 const useStyles = makeStyles({
   root: {
@@ -20,15 +22,38 @@ const useStyles = makeStyles({
   },
 });
 
-export default function VehicleCard( {vehicle} ) {
+export default function VehicleCard({ vehicle }) {
   const classes = useStyles();
 
   const history = useHistory();
 
-  const onClicked = id => {
-    console.log('clicked me');
-    history.push("/bidding/"+vehicle._id)
+  const [fav, setFav] = useState(false);
+
+  const { favVehicles,getFavVehicle, AddVehicleToFav, RemoveVehicleFromFav } = useContext(vehicleContext);
+
+  if (favVehicles && fav === false) {
+    if (favVehicles.filter((e) => e._id === vehicle._id).length > 0) {
+      setFav(true);
+      console.log('in if true');
+    }
+    console.log('in if');
   }
+
+  const onClicked = (id) => {
+    history.push('/bidding/' + vehicle._id);
+  };
+
+  const onFavClicked = (id) => {
+    console.log('clicked me');
+
+    if(fav) {
+      RemoveVehicleFromFav({vehicle, userID:'60f168102bb59e4c9890f656'});
+      getFavVehicle();
+      setFav(false);
+    } else {
+      AddVehicleToFav({vehicle, userID:'60f168102bb59e4c9890f656'});
+    }
+  };
 
   return (
     <Card className={classes.root}>
@@ -40,7 +65,7 @@ export default function VehicleCard( {vehicle} ) {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-          {`${vehicle.year} ${vehicle.manufacturer} ${vehicle.model}`}
+            {`${vehicle.year} ${vehicle.manufacturer} ${vehicle.model}`}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
             {vehicle.description}
@@ -54,14 +79,12 @@ export default function VehicleCard( {vehicle} ) {
         <Grid
           container
           direction="row"
-          justify="space-between"
+          justifyContent="space-between"
           alignItems="center"
         >
-          <Typography variant="subtitle2">
-            color
-          </Typography>
-          <IconButton aria-label="favori">
-            <FavoriteIcon />
+          <Typography variant="subtitle2">color</Typography>
+          <IconButton aria-label="favori" onClick={onFavClicked}>
+            <FavoriteIcon color={fav ? 'secondary' : 'inherit'} />
           </IconButton>
         </Grid>
       </CardActions>

@@ -74,13 +74,22 @@ const sortBy = async (req, res) => {
   try {
     const sortbyvalues = req.query;
 
-    
+    let fields = {};
+
+    console.log('in Sort');
+
     let vehicles = [];
     
     if(sortbyvalues.year){
-      
-      vehicles = await Vehicle.find({ year: sortbyvalues.year});
+      fields.year = sortbyvalues.year
     }
+
+    if(sortbyvalues.color){
+      fields.color = sortbyvalues.color
+    }
+    console.log('fields', fields);
+
+    vehicles = await Vehicle.find(fields);
 
     res.status(200).json({
       success: true,

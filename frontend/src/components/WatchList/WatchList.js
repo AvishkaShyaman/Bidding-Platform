@@ -21,7 +21,7 @@ const WatchList = () => {
 
   return (
     <div>
-      <Grid container  spacing={1} className={classes.title} justify="center" alignItems="center">
+      <Grid container  spacing={1} className={classes.title} justifyContent="center" alignItems="center">
         <Typography align="center" variant="h4" gutterBottom>
           Watch List
         </Typography>
@@ -31,7 +31,7 @@ const WatchList = () => {
         container
         spacing={4}
         className={classes.contentList}
-        justify="space-evenly"
+        justifyContent="space-evenly"
         alignItems="center"
       >
         {favVehicles.map((vehicle) => (
