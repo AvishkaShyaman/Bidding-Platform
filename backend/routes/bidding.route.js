@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const { getBidding, addBidding } = require("../controllers/bidding.controller");
-// const { productValidation } = require("../validations/product.validation");
-// const validationMiddleware = require("../middleware/validation.middleware");
+const { biddingValidation } = require("../validation/bidding.validation");
+const validationMiddleware = require("../validation/validation.middelware");
 
 router.get("/biddings", getBidding);
 
-router.post("/", addBidding);
+router.post("/", validationMiddleware(biddingValidation), addBidding);
 
 module.exports = router;

@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { getUser, addItemToWatchList, removeItemFromWatchList, getUserWatchList,addUser } = require("../controllers/user.controller");
-// const { productValidation } = require("../validations/product.validation");
-// const validationMiddleware = require("../middleware/validation.middleware");
+
 
 // router.get("/", getUser);
 
