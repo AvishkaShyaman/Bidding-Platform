@@ -5,6 +5,8 @@ import {
   REMOVE_VEHICLE_FROM_FAV,
   ADD_VEHICLE_TO_FAV,
   GET_SORT_VEHICLE,
+  FILTER_VEHICLE,
+  CLEAR_FILTER,
 } from './vehicle-actions';
 
 const vehicleReducer = (state, action) => {
@@ -21,8 +23,8 @@ const vehicleReducer = (state, action) => {
       return {
         ...state,
         vehicles: [...action.payload],
-        sortByYear:'',
-        sortByColor:'',
+        sortByYear: '',
+        sortByColor: '',
       };
     case GET_SORT_VEHICLE:
       if (action.payload.year) {
@@ -42,6 +44,24 @@ const vehicleReducer = (state, action) => {
           sortByColor: action.payload.color,
         };
       }
+    case FILTER_VEHICLE:
+      return {
+        ...state,
+        filtered: state.vehicles.filter((vehicle) => {
+          const regex = RegExp(`${action.payload}`, 'gi');
+
+          return (
+            vehicle.model.match(regex) ||
+            vehicle.description.match(regex) ||
+            vehicle.description.match(regex)
+          );
+        }),
+      };
+    case CLEAR_FILTER:
+      return {
+        ...state,
+        filtered: null,
+      };
     case GET_FAV_VEHICLE:
       return {
         ...state,

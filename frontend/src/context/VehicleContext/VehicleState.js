@@ -9,6 +9,8 @@ import {
   REMOVE_VEHICLE_FROM_FAV,
   ADD_VEHICLE_TO_FAV,
   GET_SORT_VEHICLE,
+  FILTER_VEHICLE,
+  CLEAR_FILTER,
 } from './vehicle-actions';
 import axios from 'axios';
 
@@ -18,6 +20,7 @@ const VehicleState = (props) => {
     favVehicles: [],
     sortByYear: '',
     sortByColor: '',
+    filtered: null,
   };
 
   const [state, dispatch] = useReducer(vehicleReducer, intialState);
@@ -146,17 +149,28 @@ const VehicleState = (props) => {
     }
   };
 
+  const filterVehicles = (text) => {
+    dispatch({ type: FILTER_VEHICLE, payload: text });
+  };
+
+  const clearFilter = () => {
+    dispatch({ type: CLEAR_FILTER });
+  };
+
   return (
     <VehicleContext.Provider
       value={{
         vehicles: state.vehicles,
         favVehicles: state.favVehicles,
+        filtered: state.filtered,
         AddVehicleToFav,
         RemoveVehicleFromFav,
         addVehicle,
         getVehicle,
         getFavVehicle,
         vehicleSortBy,
+        filterVehicles,
+        clearFilter,
       }}
     >
       {props.children}

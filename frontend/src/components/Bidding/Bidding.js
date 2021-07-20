@@ -12,8 +12,12 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import VehicleCard from '../Vehicle/VehicleCard';
+
+toast.configure();
 
 const useStyles = makeStyles((theme) => ({
   rightSide: {
@@ -87,23 +91,25 @@ const Bidding = (props) => {
   const onAmmountSubmited = (e) => {
     e.preventDefault();
 
-    console.log('hit me', amount);
-    axios
-      .post('http://localhost:5000/api/v1/bidding', {
-        amount,
-        user: '60f168102bb59e4c9890f656',
-        vehicleID: props.match.params.id,
-      })
-      .then((res) => {
-        console.log('added', res.data.data.bidding);
-        setAmount('');
-        console.log('hit me', res.data.data.bidding);
-        rows.unshift(res.data.data.bidding);
-        setRows([...rows]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (amount) {
+      axios
+        .post('http://localhost:5000/api/v1/bidding', {
+          amount,
+          user: '60f168102bb59e4c9890f656',
+          vehicleID: props.match.params.id,
+        })
+        .then((res) => {
+          toast('Successfully added', { type: 'success' });
+          setAmount('');
+          rows.unshift(res.data.data.bidding);
+          setRows([...rows]);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      toast('Fields can not be empty', { type: 'error' });
+    }
   };
 
   const onAmmountFieldChanged = (e) => {

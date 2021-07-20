@@ -5,6 +5,7 @@ import {
   Button,
   FormControl,
   InputLabel,
+  Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -31,7 +32,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Vehicle = () => {
   const classes = useStyles();
-  const { vehicles, getVehicle, vehicleSortBy } = useContext(vehicleContext);
+  const { vehicles, getVehicle, vehicleSortBy, filtered } =
+    useContext(vehicleContext);
 
   const [year, setYear] = useState('');
   const [color, setColor] = useState('');
@@ -63,7 +65,7 @@ const Vehicle = () => {
     getVehicle();
     setYear('');
     setColor('');
-  }
+  };
   return (
     <>
       <Grid
@@ -76,7 +78,18 @@ const Vehicle = () => {
         <Grid item lg={5} md={6} sm={12} xs={12}>
           <Search />
         </Grid>
-        <Grid container direction="row" justifyContent="space-evenly" alignItems="center" spacing={1} item lg={4} md={6} sm={12} xs={12}>
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          spacing={1}
+          item
+          lg={4}
+          md={6}
+          sm={12}
+          xs={12}
+        >
           <Grid item sm={4} xs={12}>
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel htmlFor="outlined-age-native-simple">year</InputLabel>
@@ -126,7 +139,15 @@ const Vehicle = () => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item sm={3} xs={12} container direction="row" justify="flex-end" alignItems="center">
+          <Grid
+            item
+            sm={3}
+            xs={12}
+            container
+            direction="row"
+            justifyContent="flex-end"
+            alignItems="center"
+          >
             <Button onClick={onClickClear} variant="contained" color="primary">
               Clear
             </Button>
@@ -134,19 +155,39 @@ const Vehicle = () => {
         </Grid>
       </Grid>
 
-      <Grid
-        container
-        spacing={4}
-        className={classes.contentList}
-        justifyContent="space-evenly"
-        alignItems="center"
-      >
-        {vehicles.map((vehicle) => (
-          <Grid key={vehicle._id} item lg={3} md={4} sm={6} xl={12}>
-            <VehicleCard vehicle={vehicle} />
-          </Grid>
-        ))}
-      </Grid>
+      {vehicles ? (
+        <Grid
+          container
+          spacing={4}
+          className={classes.contentList}
+          justifyContent="space-evenly"
+          alignItems="center"
+        >
+          {filtered
+            ? filtered.map((vehicle) => (
+                <Grid key={vehicle._id} item lg={3} md={4} sm={6} xl={12}>
+                  <VehicleCard vehicle={vehicle} />
+                </Grid>
+              ))
+            : vehicles.map((vehicle) => (
+                <Grid key={vehicle._id} item lg={3} md={4} sm={6} xl={12}>
+                  <VehicleCard vehicle={vehicle} />
+                </Grid>
+              ))}
+        </Grid>
+      ) : (
+        <Grid
+          container
+          spacing={4}
+          className={classes.contentList}
+          justifyContent="space-evenly"
+          alignItems="center"
+        >
+          <Typography variant="h5" gutterBottom>
+            Loading...
+          </Typography>
+        </Grid>
+      )}
     </>
   );
 };
